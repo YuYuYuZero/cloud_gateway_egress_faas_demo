@@ -14,6 +14,9 @@ USER root
 # temp no need
 ENV DOUYINCLOUD_CERT_PATH=/etc/ssl/certs/douyincloud_egress.crt
 RUN wget https://raw.githubusercontent.com/bytedance/douyincloud_cert/master/douyincloud_egress.crt -O $DOUYINCLOUD_CERT_PATH
+RUN apk update && \
+    apk upgrade && \
+    apk add bash
 
 ##RUN apk add curl
 
@@ -21,6 +24,7 @@ RUN wget https://raw.githubusercontent.com/bytedance/douyincloud_cert/master/dou
 ##RUN apt install ca-certificates -y
 # alpine
 RUN apk add ca-certificates
+
 ## centos/fedora/rhelca-certificates
 ##RUN yum install ca-certificates
 #
