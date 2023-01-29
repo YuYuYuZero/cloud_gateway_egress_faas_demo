@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -47,6 +48,31 @@ func gatewayNetworkTest(w http.ResponseWriter, req *http.Request) {
 }
 
 
+func gatewaySleepTest(w http.ResponseWriter, req *http.Request) {
+	sleepTimes := req.URL.Query()["sleep_time"]
+	if len(sleepTimes) == 0{
+		fmt.Fprintf(w, "invalid param")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	sleepTime := sleepTimes[0]
+	w.Header().Set("sleep_time", sleepTime)
+
+	if len(sleepTime) > 0{
+		sleepTimeInt, err := strconv.Atoi(sleepTime)
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		time.Sleep(time.Duration(sleepTimeInt) * time.Second)
+	}
+
+	fmt.Fprintf(w, "ok")
+	w.WriteHeader(http.StatusOK)
+	return
+}
+
 func main() {
 
 	//go RunFaasCliLoop(map[string]string{
@@ -64,6 +90,7 @@ func main() {
 	http.HandleFunc("/gateway_test", gatewayTest)
 	http.HandleFunc("/gateway_network_test", gatewayNetworkTest)
 	http.HandleFunc("/gateway_dns_test", gatewayDnsTest)
+	http.HandleFunc("/gateway_sleep_test", gatewaySleepTest)
 	http.HandleFunc("/gateway_ws_push", gatewayWsPush)
 	http.HandleFunc("/gateway_ws_handle", gatewayWsHandle)
 
