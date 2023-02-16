@@ -96,3 +96,18 @@ func main() {
 
 	http.ListenAndServe(":8000", nil)
 }
+
+//func counterParamFormatDycFullLinkCallBackend(httpStatusCode *int, trafficSource, clientOs, serverPath, availableZone *string) {
+//	if trafficSource != nil && len(*trafficSource) == 0 {
+//		*trafficSource = "-"
+//	}
+//	if clientOs != nil && len(*clientOs) == 0 {
+//		*clientOs = "-"
+//	}
+//	if serverPath != nil && len(*serverPath) == 0 {
+//		*serverPath = "-"
+//	}
+//	if availableZone != nil && len(*availableZone) == 0 {
+//		*availableZone = "-"
+//	}
+//}
