@@ -17,7 +17,8 @@ RUN wget https://raw.githubusercontent.com/bytedance/douyincloud_cert/master/dou
 RUN apk update && \
     apk upgrade && \
     apk add bash && \
-    apk add curl
+    apk add curl && \
+    apk add bind-tools
 
 ##RUN apk add curl
 
