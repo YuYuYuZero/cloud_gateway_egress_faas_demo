@@ -14,8 +14,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 
 USER root
 # temp no need
-ENV DOUYINCLOUD_CERT_PATH=/etc/ssl/certs/douyincloud_egress.crt
-RUN wget https://raw.githubusercontent.com/bytedance/douyincloud_cert/master/douyincloud_egress.crt -O $DOUYINCLOUD_CERT_PATH
+# ENV DOUYINCLOUD_CERT_PATH=/etc/ssl/certs/douyincloud_egress.crt
+# RUN wget https://raw.githubusercontent.com/bytedance/douyincloud_cert/master/douyincloud_egress.crt -O $DOUYINCLOUD_CERT_PATH
 RUN apk update && \
     apk upgrade && \
     apk add bash && \
@@ -27,12 +27,12 @@ RUN apk update && \
 ## debian/ubuntu
 ##RUN apt install ca-certificates -y
 # alpine
-RUN apk add ca-certificates
+# RUN apk add ca-certificates
 
 ## centos/fedora/rhelca-certificates
 ##RUN yum install ca-certificates
 #
 # 执行信任证书
-RUN update-ca-certificates
+# RUN update-ca-certificates
 
 CMD /opt/application/run.sh
