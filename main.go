@@ -22,6 +22,11 @@ func headers(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "NowTime: %s", time.Now().Format("2006-01-02 15:04:05"))
 }
 
+func host(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "Host: %v\n\r", req.Host)
+	fmt.Fprintf(w, "NowTime: %v", time.Now().Format("2006-01-02 15:04:05"))
+}
+
 func ping(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "TZ:%s", os.Getenv("TZ"))
 	fmt.Fprintf(w, "NowTime: %s\n", time.Now().Format("2006-01-02 15:04:05"))
@@ -35,11 +40,11 @@ func gatewayTest(w http.ResponseWriter, req *http.Request) {
 func gatewayNetworkTest(w http.ResponseWriter, req *http.Request) {
 	protocol := "http"
 	protocols := req.URL.Query()["protocol"]
-	if len(protocols) > 0 && protocols[0] == "https"{
+	if len(protocols) > 0 && protocols[0] == "https" {
 		protocol = "https"
 	}
 	urls := req.URL.Query()["url"]
-	if len(urls) == 0{
+	if len(urls) == 0 {
 		fmt.Fprintf(w, "non url param")
 		return
 	}
@@ -47,10 +52,9 @@ func gatewayNetworkTest(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, AccessOpenApiUrl(protocol, urls[0]))
 }
 
-
 func gatewaySleepTest(w http.ResponseWriter, req *http.Request) {
 	sleepTimes := req.URL.Query()["sleep_time"]
-	if len(sleepTimes) == 0{
+	if len(sleepTimes) == 0 {
 		fmt.Fprintf(w, "invalid param")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -58,7 +62,7 @@ func gatewaySleepTest(w http.ResponseWriter, req *http.Request) {
 	sleepTime := sleepTimes[0]
 	w.Header().Set("sleep_time", sleepTime)
 
-	if len(sleepTime) > 0{
+	if len(sleepTime) > 0 {
 		sleepTimeInt, err := strconv.Atoi(sleepTime)
 		if err != nil {
 			fmt.Fprintf(w, err.Error())
@@ -86,6 +90,7 @@ func main() {
 
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/headers", headers)
+	http.HandleFunc("/host", host)
 	http.HandleFunc("/v1/ping", ping)
 	http.HandleFunc("/gateway_test", gatewayTest)
 	http.HandleFunc("/gateway_network_test", gatewayNetworkTest)
