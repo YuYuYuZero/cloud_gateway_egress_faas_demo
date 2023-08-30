@@ -22,6 +22,16 @@ func headers(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "NowTime: %s", time.Now().Format("2006-01-02 15:04:05"))
 }
 
+func sleep(w http.ResponseWriter, req *http.Request) {
+	sleep := req.Header.Get("sleep")
+	sleepInt, err := strconv.Atoi(sleep)
+	if err != nil {
+		sleepInt = 1
+	}
+	time.Sleep(time.Duration(sleepInt) * time.Second)
+	fmt.Fprintf(w, "sleep %v s", sleepInt)
+}
+
 func host(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Host: %v\n\r", req.Host)
 	fmt.Fprintf(w, "NowTime: %v", time.Now().Format("2006-01-02 15:04:05"))
@@ -92,6 +102,7 @@ func main() {
 	http.HandleFunc("/headers", headers)
 	http.HandleFunc("/host", host)
 	http.HandleFunc("/v1/ping", ping)
+	http.HandleFunc("/sleep", sleep)
 	http.HandleFunc("/gateway_test", gatewayTest)
 	http.HandleFunc("/gateway_network_test", gatewayNetworkTest)
 	http.HandleFunc("/gateway_dns_test", gatewayDnsTest)
